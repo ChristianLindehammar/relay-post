@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  temp-mail-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "25:25"
+      - "8000:8000"
+    restart: unless-stopped
+    container_name: temp-mail-server

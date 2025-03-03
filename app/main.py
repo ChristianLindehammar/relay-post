@@ -1,8 +1,7 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from aiosmtpd.controller import Controller
 from smtp_handler import MailHandler, storage, storage_lock
 import time
-import asyncio
 from threading import Thread
 import uvicorn
 
