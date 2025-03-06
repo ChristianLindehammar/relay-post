@@ -3,3 +3,6 @@ fastapi
 uvicorn
 python-multipart
 email-validator
+asgiref
+redis
+firebase-admin

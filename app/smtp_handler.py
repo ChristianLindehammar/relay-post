@@ -1,10 +1,7 @@
 import email
 from email.policy import default
 import time
-from threading import Lock
-
-storage = {}
-storage_lock = Lock()
+from app.storage import store_email
 
 class MailHandler:
     async def handle_DATA(self, server, session, envelope):
@@ -27,12 +24,9 @@ class MailHandler:
                 "raw": msg_data.decode('utf-8', errors='replace')
             }
             
-            with storage_lock:
-                for rcpt in rcpt_tos:
-                    username = rcpt.split('@')[0]
-                    if username not in storage:
-                        storage[username] = []
-                    storage[username].append(email_data)
+            for rcpt in rcpt_tos:
+                username = rcpt.split('@')[0]
+                store_email(username, email_data)
             
             return '250 Message accepted for delivery'
         except Exception as e:

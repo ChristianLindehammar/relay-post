@@ -1,12 +1,36 @@
 version: '3'
 
 services:
-  temp-mail-server:
+  smtp-service:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.smtp
     ports:
       - "25:25"
+    restart: unless-stopped
+    environment:
+      - REDIS_HOST=redis
+    depends_on:
+      - redis
+
+  api-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    ports:
       - "8000:8000"
     restart: unless-stopped
-    container_name: temp-mail-server
+    environment:
+      - REDIS_HOST=redis
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+volumes:
+  redis-data:
